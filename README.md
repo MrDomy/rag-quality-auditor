@@ -15,8 +15,8 @@
 Требуется Python 3.13 (проверено) и API-ключ провайдера LLM.
 
 ```bash
-git clone <ссылка-на-репозиторий>
-cd <папка-проекта>
+git clone https://github.com/MrDomy/rag-quality-auditor
+cd rag-quality-auditor
 
 python -m venv .venv
 # Windows:        .venv\Scripts\activate

@@ -29,15 +29,20 @@ LLM_MODEL = os.environ["LLM_MODEL"]
 
 app = FastAPI(title="RAG Quality Auditor")
 client = OpenAI(
-    api_key=os.getenv("LLM_API_KEY"), base_url=os.getenv("LLM_BASE_URL"), timeout=30
+    api_key=os.environ["LLM_API_KEY"], base_url=os.environ["LLM_BASE_URL"], timeout=30
 )
-logger = logging.getLogger(__name__)
 
 
 class EvaluateRequest(BaseModel):
-    question: str = Field(min_length=1, description="Вопрос пользователя (question)")
+    question: str = Field(
+        min_length=1,
+        description="Вопрос пользователя (question)",
+    )
     chunks: list[str] = Field(description="Найденные фрагменты информации (chunks)")
-    rag_answer: str = Field(min_length=1, description="Ответ RAG-системы (rag_answer)")
+    rag_answer: str = Field(
+        min_length=1,
+        description="Ответ RAG-системы (rag_answer)",
+    )
 
 
 class EvaluateResponse(BaseModel):
@@ -71,7 +76,8 @@ def evaluate(req: EvaluateRequest):
     except openai.RateLimitError:
         logger.warning("Превышен лимит запросов к LLM-провайдеру")
         raise HTTPException(
-            status_code=429, detail="Превышен лимит запросов к LLM-провайдеру, повторите позже"
+            status_code=429,
+            detail="Превышен лимит запросов к LLM-провайдеру, повторите позже",
         )
     except openai.OpenAIError:
         logger.exception("Ошибка при обращении к LLM")
